@@ -121,9 +121,10 @@ illustration.
 
 Motion can clarify how state crosses a bottleneck, but the explanation must survive without it. This
 local SVG plays once, finishes in a meaningful state, and immediately shows that final state when the
-reader prefers reduced motion.
+reader prefers reduced motion. Its replay control reloads the isolated SVG document, so the finite
+animation can be inspected again without adding an article-level animation runtime.
 
-![Three token-state signals move once from the KV cache toward the decode step](./memory-signal.svg)
+![Three token-state signals move once from the KV cache toward the decode step](./memory-signal.svg "replayable-animation")
 
 ## Mermaid diagrams
 
@@ -131,15 +132,34 @@ Mermaid is useful when relationships matter more than custom illustration. The s
 in Markdown, while the portfolio renders light and dark SVG variants during the static build.
 
 ```mermaid
-flowchart LR
+flowchart TB
   accTitle: LLM inference phases and the KV cache
   accDescr: A prompt enters prefill, writes reusable state to the KV cache, and decode repeatedly reads the cache until the response is complete.
-  Prompt[Prompt tokens] --> Prefill[Prefill]
-  Prefill --> Cache[(KV cache)]
-  Cache --> Decode[Decode one token]
-  Decode --> Decision{Response complete?}
-  Decision -->|No| Cache
-  Decision -->|Yes| Response[Response]
+  subgraph Context[Build reusable context]
+    direction LR
+    Prompt[Prompt tokens] --> Prefill[Prefill] --> Cache[(KV cache)]
+  end
+  subgraph Generation[Generate the response]
+    direction LR
+    Decode[Decode one token] --> Decision{Complete?}
+    Decision -->|No| Decode
+    Decision -->|Yes| Response[Response]
+  end
+  Cache --> Decode
+
+  classDef input fill:#1d4ed8,stroke:#93c5fd,color:#ffffff,stroke-width:2px;
+  classDef compute fill:#6d28d9,stroke:#c4b5fd,color:#ffffff,stroke-width:2px;
+  classDef memory fill:#047857,stroke:#6ee7b7,color:#ffffff,stroke-width:2px;
+  classDef decision fill:#b45309,stroke:#fcd34d,color:#ffffff,stroke-width:2px;
+  classDef output fill:#be123c,stroke:#fda4af,color:#ffffff,stroke-width:2px;
+  class Prompt input;
+  class Prefill,Decode compute;
+  class Cache memory;
+  class Decision decision;
+  class Response output;
+  style Context fill:transparent,stroke:#64748b,stroke-width:2px;
+  style Generation fill:transparent,stroke:#64748b,stroke-width:2px;
+  linkStyle default stroke:#64748b,stroke-width:2px;
 ```
 
 ## Images, disclosure, and references
