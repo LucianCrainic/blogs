@@ -1,0 +1,50 @@
+name: Validate blog content
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Portfolio compatibility
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out blog content
+        uses: actions/checkout@v7
+        with:
+          path: blogs
+          persist-credentials: false
+
+      - name: Check out portfolio validator
+        uses: actions/checkout@v7
+        with:
+          repository: LucianCrainic/luciancrainic.github.io
+          ref: main
+          path: portfolio
+          persist-credentials: false
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11.18.0
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: portfolio/pnpm-lock.yaml
+
+      - name: Install portfolio dependencies
+        run: pnpm --dir portfolio install --frozen-lockfile
+
+      - name: Validate blog content
+        run: pnpm --dir portfolio validate -- --content-dir "$GITHUB_WORKSPACE/blogs/posts"

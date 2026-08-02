@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title description">
+  <title id="title">Memory movement blog cover</title>
+  <desc id="description">Abstract processor tiles connected by memory channels</desc>
+  <style>
+    .background { fill: #f4f4f5; }
+    .grid { stroke: #d4d4d8; }
+    .tile { fill: #ffffff; stroke: #a1a1aa; }
+    .channel { fill: none; stroke: #4f46e5; }
+    .dot { fill: #4f46e5; }
+    .label { fill: #52525b; }
+    @media (prefers-color-scheme: dark) {
+      .background { fill: #111113; }
+      .grid { stroke: #27272a; }
+      .tile { fill: #18181b; stroke: #52525b; }
+      .channel { stroke: #818cf8; }
+      .dot { fill: #818cf8; }
+      .label { fill: #a1a1aa; }
+    }
+  </style>
+  <rect class="background" width="1600" height="900"/>
+  <g class="grid" stroke-width="1" opacity=".65">
+    <path d="M0 150h1600M0 300h1600M0 450h1600M0 600h1600M0 750h1600"/>
+    <path d="M200 0v900M400 0v900M600 0v900M800 0v900M1000 0v900M1200 0v900M1400 0v900"/>
+  </g>
+  <g class="tile" stroke-width="3">
+    <rect x="248" y="264" width="276" height="276" rx="28"/>
+    <rect x="1076" y="264" width="276" height="276" rx="28"/>
+    <rect x="662" y="508" width="276" height="170" rx="28"/>
+  </g>
+  <g class="channel" stroke-width="9" stroke-linecap="round">
+    <path d="M524 345c214 0 246 164 538 164"/>
+    <path d="M538 464c172 0 198 129 198 129"/>
+    <path d="M938 593c0-94 41-166 124-166"/>
+  </g>
+  <g class="dot">
+    <circle cx="524" cy="345" r="13"/>
+    <circle cx="1062" cy="509" r="13"/>
+    <circle cx="538" cy="464" r="13"/>
+    <circle cx="736" cy="593" r="13"/>
+    <circle cx="938" cy="593" r="13"/>
+    <circle cx="1062" cy="427" r="13"/>
+  </g>
+  <g class="label" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="24" letter-spacing="3">
+    <text x="286" y="591">COMPUTE</text>
+    <text x="1114" y="591">MEMORY</text>
+    <text x="702" y="728">DATA PATH</text>
+    <text x="72" y="824">LDC / MEMORY PATH / NOTE 001</text>
+  </g>
+</svg>
