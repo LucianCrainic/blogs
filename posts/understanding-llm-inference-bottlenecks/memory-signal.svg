@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 540" role="img" aria-labelledby="title description">
+  <title id="title">KV-cache state moving to the decode step</title>
+  <desc id="description">Three token-state signals travel once from the KV cache to a decode operation across a memory channel.</desc>
+  <style>
+    :root { color-scheme: light dark; }
+    .background { fill: #f8fafc; }
+    .node { fill: #ffffff; stroke: #475569; stroke-width: 3; }
+    .channel { fill: none; stroke: #94a3b8; stroke-width: 12; stroke-linecap: round; }
+    .signal { fill: #2563eb; transform-box: fill-box; transform-origin: center; animation: travel 2.6s cubic-bezier(.2,.7,.2,1) 1 both; }
+    .signal-b { animation-delay: .18s; }
+    .signal-c { animation-delay: .36s; }
+    .title { fill: #0f172a; font: 700 30px ui-sans-serif, system-ui, sans-serif; }
+    .label { fill: #0f172a; font: 650 24px ui-sans-serif, system-ui, sans-serif; }
+    .detail { fill: #475569; font: 500 18px ui-sans-serif, system-ui, sans-serif; }
+    @keyframes travel {
+      from { transform: translateX(0); opacity: .28; }
+      to { transform: translateX(560px); opacity: 1; }
+    }
+    @media (prefers-color-scheme: dark) {
+      .background { fill: #111827; }
+      .node { fill: #1f2937; stroke: #94a3b8; }
+      .channel { stroke: #64748b; }
+      .signal { fill: #60a5fa; }
+      .title, .label { fill: #f8fafc; }
+      .detail { fill: #cbd5e1; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .signal { animation: none; transform: translateX(560px); opacity: 1; }
+    }
+    @media (forced-colors: active) {
+      .background, .node { fill: Canvas; }
+      .node, .channel { stroke: CanvasText; }
+      .signal { fill: Highlight; }
+      .title, .label, .detail { fill: CanvasText; }
+    }
+  </style>
+  <rect class="background" width="1200" height="540" rx="36"/>
+  <text class="title" x="70" y="78">Moving reusable state instead of recomputing it</text>
+  <path class="channel" d="M320 286H880"/>
+  <rect class="node" x="62" y="180" width="258" height="212" rx="28"/>
+  <rect class="node" x="880" y="180" width="258" height="212" rx="28"/>
+  <circle class="signal" cx="320" cy="254" r="17"/>
+  <circle class="signal signal-b" cx="320" cy="286" r="17"/>
+  <circle class="signal signal-c" cx="320" cy="318" r="17"/>
+  <text class="label" x="191" y="268" text-anchor="middle">KV cache</text>
+  <text class="detail" x="191" y="308" text-anchor="middle">keys and values</text>
+  <text class="label" x="1009" y="268" text-anchor="middle">Decode</text>
+  <text class="detail" x="1009" y="308" text-anchor="middle">next-token step</text>
+</svg>

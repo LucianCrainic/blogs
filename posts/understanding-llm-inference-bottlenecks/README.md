@@ -1,14 +1,14 @@
 ---
 title: "Example: Understanding LLM Inference Bottlenecks"
-description: "Example article demonstrating the blog folder, frontmatter, media, and GitHub-flavored Markdown format."
+description: "Living format demo for blog frontmatter, code, static and animated SVG media, Mermaid diagrams, and GitHub-flavored Markdown."
 published: 2026-07-29
-updated: 2026-07-29
+updated: 2026-08-02
 category: passion
 tags:
   - llm
   - inference
   - hpc
-draft: true
+draft: false
 featured: true
 cover: "./cover.svg"
 cover_alt: "Abstract diagram of processor tiles connected by flowing memory channels"
@@ -17,8 +17,8 @@ cover_alt: "Abstract diagram of processor tiles connected by flowing memory chan
 # Understanding LLM Inference Bottlenecks
 
 > [!NOTE]
-> **This is example content.** Replace this folder with a real article when
-> ready; it exists to document and exercise the blog format.
+> **This is a living format demo.** It documents and exercises every article primitive supported
+> by the portfolio while using LLM inference as a concrete thread.
 
 Each article lives in its own folder under `posts/`. The folder contains a `README.md` and may
 contain a local cover or other article media:
@@ -27,7 +27,9 @@ contain a local cover or other article media:
 posts/
 └── understanding-llm-inference-bottlenecks/
     ├── README.md
-    └── cover.svg
+    ├── cover.svg
+    ├── inference-step.svg
+    └── memory-signal.svg
 ```
 
 The folder name creates the stable route: `/blog/understanding-llm-inference-bottlenecks`. An
@@ -55,31 +57,105 @@ Every `README.md` begins with validated YAML metadata. Dates use `YYYY-MM-DD`, c
 The validator rejects impossible dates, duplicate tags or slugs, unknown categories, missing local
 media, and covers without descriptive alternative text.
 
-## Markdown features
+## Prose and structure
 
-Articles support GitHub-flavored Markdown and MDX where it adds real value:
+Articles support GitHub-flavored Markdown and MDX where it adds real value. That includes
+**emphasis**, external [links to primary research](https://arxiv.org/abs/2211.05102), inline
+`code`, and stable heading anchors.
 
-- [x] Tables, task lists, nested lists, and blockquotes
-- [x] Footnotes and links
-- [x] Heading anchors
-- [x] Inline `code` and highlighted code fences
-- [x] Responsive images and tables
+> [!TIP]
+> Lead with the claim a reader should remember, then use diagrams and code to make the mechanism
+> inspectable.
 
-```cpp
-// Fenced code is highlighted by the site build.
+Lists can express both hierarchy and progress:
+
+1. Separate the two inference phases.
+   - Prefill processes the prompt in parallel.
+   - Decode produces one new token per sequence step.
+2. Measure the constrained resource.
+   - Compute-bound work rewards more arithmetic throughput.
+   - Memory-bound work rewards moving model state efficiently.
+
+- [x] Define the claim
+- [x] Support it with a compact example
+- [ ] Replace the illustrative measurements with experiment data in a future technical article
+
+Tables remain horizontally contained on narrow screens:
+
+| Phase   | Dominant shape                  | Common bottleneck        |
+| ------- | ------------------------------- | ------------------------ |
+| Prefill | Many prompt tokens in parallel  | Compute and memory mix   |
+| Decode  | One token per active sequence   | Model-weight bandwidth   |
+| Serving | Many independent user sequences | Scheduling and KV memory |
+
+## Code examples
+
+Fenced code is highlighted by the site build, receives responsive overflow behavior, and can carry
+a descriptive title. Inline formulas that do not need a math renderer can remain code, such as
+`bandwidth = bytes / seconds`.
+
+```cpp title="bandwidth.cpp"
+// Fictional values keep the format demo reproducible.
 double bandwidth_gb_s(double bytes, double seconds) {
   return bytes / seconds / 1'000'000'000.0;
 }
+
+const double observed = bandwidth_gb_s(90'000'000'000.0, 0.12);
 ```
 
-Images in the article body use normal Markdown and must include useful alt text:
+Terminal snippets use an exact language too:
 
-```markdown
-![Chart comparing measured memory bandwidth across configurations](./bandwidth.webp)
+```bash title="Validate an external blogs checkout"
+pnpm validate -- --content-dir ../blogs/posts
 ```
 
-Empty alt text is reserved for truly decorative images. The content validator warns about empty
-Markdown alt text so that intent is reviewed.
+## Static SVG illustrations
+
+Article-specific vector diagrams live beside the Markdown source. The following SVG uses its own
+light, dark, and forced-color palettes, so it remains a portable asset as well as a responsive blog
+illustration.
+
+![An inference step moves token state through attention and an MLP before sampling the next token](./inference-step.svg)
+
+## Reduced-motion-safe animation
+
+Motion can clarify how state crosses a bottleneck, but the explanation must survive without it. This
+local SVG plays once, finishes in a meaningful state, and immediately shows that final state when the
+reader prefers reduced motion.
+
+![Three token-state signals move once from the KV cache toward the decode step](./memory-signal.svg)
+
+## Mermaid diagrams
+
+Mermaid is useful when relationships matter more than custom illustration. The source stays readable
+in Markdown, while the portfolio renders light and dark SVG variants during the static build.
+
+```mermaid
+flowchart LR
+  accTitle: LLM inference phases and the KV cache
+  accDescr: A prompt enters prefill, writes reusable state to the KV cache, and decode repeatedly reads the cache until the response is complete.
+  Prompt[Prompt tokens] --> Prefill[Prefill]
+  Prefill --> Cache[(KV cache)]
+  Cache --> Decode[Decode one token]
+  Decode --> Decision{Response complete?}
+  Decision -->|No| Cache
+  Decision -->|Yes| Response[Response]
+```
+
+## Images, disclosure, and references
+
+Normal Markdown images must have alternative text that conveys their purpose. Longer supporting
+detail can stay tucked into native disclosure markup without requiring a custom component.
+
+<details>
+<summary>Why the KV cache matters</summary>
+
+Without cached keys and values, decoding would recompute attention state for every earlier token on
+every step. Caching exchanges that repeated work for a growing memory footprint.
+
+</details>
+
+Footnotes keep citations near the claim without interrupting the main explanation.[^static]
 
 ## Publishing workflow
 
@@ -93,4 +169,6 @@ Markdown alt text so that intent is reviewed.
 Reading time, category and tag data, related posts, previous/next navigation, RSS metadata, and the
 article URL are derived at build time.[^static]
 
-[^static]: The final website is statically generated for GitHub Pages.
+[^static]:
+    The final website, including Mermaid diagrams and article media, is statically generated
+    for GitHub Pages.

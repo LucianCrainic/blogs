@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 540" role="img" aria-labelledby="title description">
+  <title id="title">Anatomy of one inference step</title>
+  <desc id="description">Token state flows from input through attention and an MLP before a new token is sampled.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 10 5 0 10Z" class="arrowhead"/>
+    </marker>
+  </defs>
+  <style>
+    :root { color-scheme: light dark; }
+    .background { fill: #f8fafc; }
+    .node { fill: #ffffff; stroke: #475569; stroke-width: 3; }
+    .node-accent { fill: #eff6ff; stroke: #2563eb; }
+    .path { fill: none; stroke: #2563eb; stroke-width: 5; marker-end: url(#arrow); }
+    .arrowhead { fill: #2563eb; }
+    .title { fill: #0f172a; font: 700 30px ui-sans-serif, system-ui, sans-serif; }
+    .label { fill: #0f172a; font: 650 24px ui-sans-serif, system-ui, sans-serif; }
+    .detail { fill: #475569; font: 500 18px ui-sans-serif, system-ui, sans-serif; }
+    @media (prefers-color-scheme: dark) {
+      .background { fill: #111827; }
+      .node { fill: #1f2937; stroke: #94a3b8; }
+      .node-accent { fill: #172554; stroke: #60a5fa; }
+      .path { stroke: #60a5fa; }
+      .arrowhead { fill: #60a5fa; }
+      .title, .label { fill: #f8fafc; }
+      .detail { fill: #cbd5e1; }
+    }
+    @media (forced-colors: active) {
+      .background, .node, .node-accent { fill: Canvas; }
+      .node, .node-accent, .path { stroke: CanvasText; }
+      .arrowhead, .title, .label, .detail { fill: CanvasText; }
+    }
+  </style>
+  <rect class="background" width="1200" height="540" rx="36"/>
+  <text class="title" x="70" y="78">One autoregressive decode step</text>
+  <path class="path" d="M280 286H376"/>
+  <path class="path" d="M594 286H690"/>
+  <path class="path" d="M908 286H1004"/>
+  <rect class="node" x="62" y="190" width="218" height="192" rx="28"/>
+  <rect class="node-accent" x="376" y="190" width="218" height="192" rx="28"/>
+  <rect class="node" x="690" y="190" width="218" height="192" rx="28"/>
+  <rect class="node-accent" x="1004" y="190" width="134" height="192" rx="28"/>
+  <text class="label" x="171" y="267" text-anchor="middle">Token state</text>
+  <text class="detail" x="171" y="307" text-anchor="middle">hidden vector</text>
+  <text class="label" x="485" y="267" text-anchor="middle">Attention</text>
+  <text class="detail" x="485" y="307" text-anchor="middle">read KV cache</text>
+  <text class="label" x="799" y="267" text-anchor="middle">MLP</text>
+  <text class="detail" x="799" y="307" text-anchor="middle">transform state</text>
+  <text class="label" x="1071" y="267" text-anchor="middle">Sample</text>
+  <text class="detail" x="1071" y="307" text-anchor="middle">next token</text>
+</svg>

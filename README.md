@@ -18,8 +18,9 @@ posts/
     └── supporting-diagram.svg
 ```
 
-Use `README.md` for normal Markdown or `README.mdx` when an article needs MDX. Keep covers and
-supporting images beside the article and reference them with relative paths.
+Use `README.md` for normal Markdown or `README.mdx` when an article genuinely needs MDX. Keep covers
+and supporting images beside the article and reference them with relative paths. Portfolio-local
+skills initialize posts and add the supported code, SVG, animation, and Mermaid patterns.
 
 ## Frontmatter
 
@@ -48,3 +49,14 @@ portfolio release.
 Pull requests and pushes to `main` validate the content against the portfolio's current schema.
 Merging a post does not publish it automatically: the portfolio must update its pinned submodule
 commit and create its normal release tag.
+
+## Rich article content
+
+- Use ordinary fenced code with an exact language; the portfolio applies syntax highlighting,
+  responsive overflow, and copy behavior.
+- Embed static or animated SVG files with Markdown. Give every meaningful image useful alternative
+  text, include a `viewBox`, support light and dark palettes, and disable animation for
+  `prefers-reduced-motion`.
+- Author Mermaid diagrams as fenced `mermaid` blocks with `accTitle` and `accDescr`. The portfolio
+  renders light and dark SVG variants at build time; articles must not load Mermaid from a CDN.
+- Preview and validate every new content type through the portfolio before publishing.
